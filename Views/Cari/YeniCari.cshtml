@@ -1,0 +1,33 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Cariler
+@{
+    ViewBag.Title = "Cari Ekleme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="display-4">
+            @ViewBag.Title
+        </div>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-group" method="post">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false)
+            @Html.LabelFor(x => x.CariAd)
+            @Html.TextBoxFor(x => x.CariAd, new { @class = "form-control" }) <br />
+            @Html.LabelFor(x => x.CariSoyad)
+            @Html.TextBoxFor(x => x.CariSoyad, new { @class = "form-control" }) <br />
+            @Html.LabelFor(x => x.CariSehir)
+            @Html.TextBoxFor(x => x.CariSehir, new { @class = "form-control" }) <br />
+            @Html.LabelFor(x => x.CariMail)
+            @Html.TextBoxFor(x => x.CariMail, new { @class = "form-control" }) <br />
+            <button class="btn btn-outline-success" title="Kaydet"><i class="fa fa-save mr-2"></i>Kaydet</button>
+            <a href="/Cari/Index" class="btn btn-outline-danger" title="İptal"><i class="fa fa-angle-double-left mr-2"></i>İptal</a>
+        </form>
+    </div>
+</div>

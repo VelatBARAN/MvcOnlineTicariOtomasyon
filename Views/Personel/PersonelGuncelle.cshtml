@@ -1,0 +1,36 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Personel
+@{
+    ViewBag.Title = "PersonelGuncelle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="display-4">
+            @ViewBag.Title
+        </div>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("PersonelGuncelle", "Personel", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false)
+            @Html.HiddenFor(model => model.PersonelId)
+            @Html.LabelFor(x => x.PersonelAd)
+            @Html.TextBoxFor(x => x.PersonelAd, new { @class = "form-control" }) <br />
+            @Html.LabelFor(x => x.PersonelSoyad)
+            @Html.TextBoxFor(x => x.PersonelSoyad, new { @class = "form-control" }) <br />
+            @Html.LabelFor(x => x.PersonelGorsel)
+            @Html.TextBoxFor(x => x.PersonelGorsel, new { @class = "form-control" }) <br />
+            @Html.LabelFor(x => x.DepartmanId)
+            @Html.DropDownListFor(x => x.DepartmanId, (List<SelectListItem>)ViewBag.Departmanlar, "Departman seçiniz...", new { @class = "form-control dropdown" }) <br />
+            <button class="btn btn-outline-success" title="Güncelle"><i class="fa fa-edit mr-2"></i>Güncelle</button>
+            <a href="/Personel/Index" class="btn btn-outline-danger" title="İptal"><i class="fa fa-angle-double-left mr-2"></i>İptal</a>
+        }
+
+    </div>
+</div>

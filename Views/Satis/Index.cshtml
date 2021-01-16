@@ -1,0 +1,58 @@
+﻿@using MvcOnlineTicariOtomasyon.Models.Siniflar
+@model List<SatisHareket>
+@{
+    ViewBag.Title = "Satışlar";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="display-4">
+            @ViewBag.Title
+        </div>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover table-striped dt-responsive nowrap" id="tbl">
+            <thead>
+                <tr class="text-center">
+                    <th>ID</th>
+                    <th>Ürün</th>
+                    <th>Cari</th>
+                    <th>Personel</th>
+                    <th>Adet</th>
+                    <th>Fiyat</th>
+                    <th>Toplam</th>
+                    <th>Tarih</th>
+                    <th>Sil</th>
+                    <th>Güncelle</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-center">
+                        <td>@item.SatisId</td>
+                        <td>@item.Urun.UrunAd</td>
+                        <td>@item.Cariler.CariAd&nbsp;@item.Cariler.CariSoyad</td>
+                        <td>@item.Personel.PersonelAd&nbsp;@item.Personel.PersonelSoyad</td>
+                        <td>@item.Adet</td>
+                        <td>@item.Fiyat</td>
+                        <td>@item.ToplamTutar</td>
+                        <td>@Convert.ToDateTime(item.Tarih).ToString("dd/mm/yyyy hh:mm:ss")</td>
+                        <td><a href="/Satis/SatisGuncelle/@item.SatisId" class="btn btn-outline-warning" title="Güncelle"><i class="fa fa-edit mr-2"></i>Güncelle</a></td>
+                        <td><a href="/Satis/SatisDetay/@item.SatisId" class="btn btn-outline-info" title="Detay"><i class="fa fa-search mr-2"></i>Detay</a></td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+        <a href="/Satis/YeniSatisYap" class="btn btn-outline-primary" title="Yeni Satış Yap"> <i class="fa fa-plus mr-2"></i>Yeni Satış Yap</a>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/customDatatable.js"></script>

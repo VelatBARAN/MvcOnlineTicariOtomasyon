@@ -1,0 +1,50 @@
+﻿@using MvcOnlineTicariOtomasyon.Models.Siniflar
+@model List<SatisHareket>
+@{
+    ViewBag.Title = "Cari Satış Geçmişi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="display-4">
+            @ViewBag.Title
+        </div>
+    </div>
+</div>
+
+<ol class="breadcrumb mt-3">
+    <li class="breadcrumb-item active">Cari : <strong>@ViewBag.Cari</strong></li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover table-striped">
+            <tr class="text-center">
+                <th>Satış ID</th>
+                <th>Ürün</th>
+                <th>Personel</th>
+                <th>Fİyat</th>
+                <th>Adet</th>
+                <th>Toplam Tutar</th>
+                <th>Tarih</th>
+                <th>Yazdır</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <td>@item.SatisId</td>
+                    <td>@item.Urun.UrunAd</td>
+                    <td>@item.Personel.PersonelAd&nbsp;@item.Personel.PersonelSoyad</td>
+                    <td>@item.Fiyat</td>
+                    <td>@item.Adet</td>
+                    <td>@item.ToplamTutar</td>
+                    <td>@Convert.ToDateTime(item.Tarih).ToString("dd/MM/yyyy hh:mm:ss")</td>
+                    <td><a href="/Cari/CariSatisGecmisi/@item.CariId" class="btn btn-outline-primary" title="Yazdır"> <i class="fa fa-print mr-2"></i>Yazdır</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,40 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.FaturaKalem
+@{
+    ViewBag.Title = "FaturaKalemEkle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="display-4">
+            @ViewBag.Title
+        </div>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-group" method="post">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false)
+            @Html.LabelFor(x => x.FaturaId)
+           @* @Html.TextBoxFor(x => x.FaturaId, new { @class = "form-control" }) <br />*@
+            <input type="number" value="@Session["faturaid"]" name="FaturaId" readonly class="form-control" />
+            @Html.LabelFor(x => x.Aciklama)
+            @Html.TextBoxFor(x => x.Aciklama, new { @class = "form-control" }) <br />
+            @Html.LabelFor(x => x.Miktar)
+            @Html.TextBoxFor(x => x.Miktar, new { @class = "form-control" }) <br />
+            @Html.LabelFor(x => x.BirimFiyat)
+            @Html.TextBoxFor(x => x.BirimFiyat, new { @class = "form-control" }) <br />
+            @*@Html.LabelFor(x => x.FaturaTarihi)
+        @Html.DropDownListFor(x => x.FaturaTarihi, (List<SelectListItem>)ViewBag.Departmanlar, "Departman seçiniz...", new { @class = "form-control dropdown" }) <br />*@
+            @Html.LabelFor(x => x.Tutar)
+            @Html.TextBoxFor(x => x.Tutar, new { @class = "form-control" }) <br />
+            <button class="btn btn-outline-success" title="Kaydet"><i class="fa fa-save mr-2"></i>Kaydet</button>
+            <a href="/Fatura/Index" class="btn btn-outline-danger" title="İptal"><i class="fa fa-angle-double-left mr-2"></i>İptal</a>
+        </form>
+    </div>
+</div>
+
+

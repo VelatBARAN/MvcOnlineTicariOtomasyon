@@ -1,0 +1,44 @@
+﻿@model List<MvcOnlineTicariOtomasyon.Models.Siniflar.Personel>
+@{
+    ViewBag.Title = "Departman Detay";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="display-4">
+            @ViewBag.Title
+        </div>
+    </div>
+</div>
+
+<ol class="breadcrumb mt-3">
+    <li class="breadcrumb-item active">Departman Adı : <strong>@ViewBag.DepartmanAdi</strong></li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover table-striped dt-responsive nowrap" id="tbl">
+            <tr class="text-center">
+                <th>Personel ID</th>
+                <th>Adı</th>
+                <th>Soyadı</th>
+                <th>Görsel</th>
+                <th>Satışlar</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <td>@item.PersonelId</td>
+                    <td>@item.PersonelAd</td>
+                    <td>@item.PersonelSoyad</td>
+                    <td>@item.PersonelGorsel</td>
+                    <td><a href="/Departman/DepartmanPersonelSatis/@item.PersonelId" class="btn btn-outline-success" title="Satışlar"> <i class="fa fa-turkish-lira mr-2"></i> Satışlar</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/customDatatable.js"></script>

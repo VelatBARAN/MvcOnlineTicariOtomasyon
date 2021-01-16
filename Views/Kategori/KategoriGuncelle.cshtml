@@ -1,0 +1,30 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Kategori
+@{
+    ViewBag.Title = "Kategori Güncelleme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="display-4">
+            @ViewBag.Title
+        </div>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("KategoriGuncelle", "Kategori", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false)
+            @Html.HiddenFor(model => model.KategoriId)
+            @Html.LabelFor(x => x.KategoriAd)
+            @Html.TextBoxFor(x => x.KategoriAd, new { @class = "form-control" }) <br />
+            <button type="submit" class="btn btn-outline-success" title="Güncelle"><i class="fa fa-edit mr-2"></i>Güncelle</button>
+            <a href="/Kategori/Index" class="btn btn-outline-danger" title="İptal"><i class="fa fa-angle-double-left mr-2"></i>İptal</a>
+        }
+    </div>
+</div>
+

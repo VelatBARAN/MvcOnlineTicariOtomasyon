@@ -1,0 +1,52 @@
+﻿@using MvcOnlineTicariOtomasyon.Models.Siniflar
+@model List<Cariler>
+@{
+    ViewBag.Title = "Cariler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="display-4">
+            @ViewBag.Title
+        </div>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover table-striped dt-responsive nowrap" id="tbl">
+            <thead>
+                <tr class="text-center">
+                    <th>ID</th>
+                    <th>Cari Adı</th>
+                    <th>Cari Soyad</th>
+                    <th>Şehir</th>
+                    <th>Email</th>
+                    <th>Sil</th>
+                    <th>Güncelle</th>
+                    <th>Detaylar</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-center">
+                        <td>@item.CariId</td>
+                        <td>@item.CariAd</td>
+                        <td>@item.CariSoyad</td>
+                        <td>@item.CariSehir</td>
+                        <td>@item.CariMail</td>
+                        <td><a href="/Cari/CariSil/@item.CariId" class="btn btn-outline-danger" title="Sil"><i class="fa fa-trash mr-2"></i> Sil</a></td>
+                        <td><a href="/Cari/CariGuncelle/@item.CariId" class="btn btn-outline-warning" title="Güncelle"><i class="fa fa-edit mr-2"></i> Güncelle</a></td>
+                        <td><a href="/Cari/CariSatisGecmisi/@item.CariId" class="btn btn-outline-info" title="Satış Geçmişi"><i class="fa fa-search mr-2"></i> Satış Geçmişi</a></td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+        <a href="/Cari/YeniCari" class="btn btn-outline-primary" title="Yeni Cari Ekle"> <i class="fa fa-plus mr-2"></i> Yeni Cari Ekle</a>
+    </div>
+</div>

@@ -1,31 +1,224 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using MvcOnlineTicariOtomasyon.Models.Siniflar
+
+@{
+    ViewBag.Title = "İstatistikler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    Context c = new Context();
+    var cariler = c.Carilers.Count().ToString();
+    var personeller = c.Personels.Count().ToString();
+    var kategoriler = c.Kategoris.Count().ToString();
+    var urunler = c.Uruns.Count().ToString();
+    var toplamStok = c.Uruns.Sum(x => x.Stok).ToString();
+    var kritikSeviyeUrunleri = c.Uruns.Count(x => x.Stok <= 20).ToString();
+    var markaSayisi = (from k in c.Uruns.ToList() select k.Marka).Distinct().Count(); <!-- distinc ile tekrarsız olarak toplam marka sayısı bulma-->
+    var maxFiyatUrun = (from k in c.Uruns.ToList() orderby k.SatisFiyat descending select k.UrunAd).FirstOrDefault();
+    var minFiyatUrun = (from k in c.Uruns.ToList() orderby k.SatisFiyat ascending select k.UrunAd).FirstOrDefault();
+    var buzdolabiSayisi = c.Uruns.Count(x => x.UrunAd == "Buzdolabı").ToString();
+    var laptopSayisi = c.Uruns.Count(x => x.UrunAd == "Laptop").ToString();
+    var kasadakiTutar = c.SatisHarekets.Sum(x => x.ToplamTutar).ToString();
+    DateTime bugün = DateTime.Today;
+    var bugünküSatisSayisi = c.SatisHarekets.Count(x => x.Tarih == bugün).ToString();
+    var bugünküKasa = c.SatisHarekets.Where(x => x.Tarih == bugün).Sum(y => y.ToplamTutar).ToString();
+    var maxUrunluMarka = c.Uruns.GroupBy(x => x.Marka).OrderByDescending(x => x.Count()).Select(x => x.Key).FirstOrDefault();
+    var enCokSatilanUrun = c.Uruns.Where(u=>u.UrunId == ( c.SatisHarekets.GroupBy(x => x.UrunId).OrderByDescending(x => x.Count()).Select(x => x.Key).FirstOrDefault())).Select(k=>k.UrunAd).FirstOrDefault();
+
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<link href="~/web2/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<script src="~/web2/js/zingchart.min.js"></script>
+<script src="~/web2/js/zingchart.jquery.js"></script>
+<script src="~/web2/js/jquery.easydropdown.js"></script>
+<script src="~/web2/js/jquery.nicescroll.js"></script>
+
+<link href="~/web2/css/jqvmap.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="~/web2/js/jquery.vmap.js" type="text/javascript"></script>
+<script src="~/web2/js/jquery.vmap.world.js" type="text/javascript"></script>
+<script src="~/web2/js/jquery.vmap.sampledata.js" type="text/javascript"></script>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="display-4">
+            @ViewBag.Title
+        </div>
+        <hr />
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="col-md-12">
+        <div class="list_of_members">
+            <div class="sales" style="background-color:darkturquoise">
+                <div class="icon">
+                    <i class="dollar"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@cariler</h3>
+                    <p>Toplam Cari</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="new-users" style="background-color:aquamarine">
+                <div class="icon">
+                    <i class="user1"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@urunler</h3>
+                    <p>Ürün Sayısı</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="orders" style="background-color:antiquewhite">
+                <div class="icon">
+                    <i class="order"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@personeller</h3>
+                    <p>Personel Sayısı</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="visitors" style="background-color:greenyellow">
+                <div class="icon">
+                    <i class="visit"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@kategoriler</h3>
+                    <p>Kategori Sayısı</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="list_of_members">
+            <div class="sales">
+                <div class="icon">
+                    <i class="dollar"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@toplamStok</h3>
+                    <p>Toplam Stok</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="new-users">
+                <div class="icon">
+                    <i class="user1"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@kritikSeviyeUrunleri</h3>
+                    <p>Kritik Seviyedeki Ürünler</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="orders">
+                <div class="icon">
+                    <i class="order"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@maxFiyatUrun</h3>
+                    <p>Max. Fiyatlı Ürün</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="visitors">
+                <div class="icon">
+                    <i class="visit"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@minFiyatUrun</h3>
+                    <p>Min. Fiyatlı Ürün</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="list_of_members">
+            <div class="sales">
+                <div class="icon">
+                    <i class="dollar"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@markaSayisi</h3>
+                    <p>Marka Sayısı</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="new-users">
+                <div class="icon">
+                    <i class="user1"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@maxUrunluMarka</h3>
+                    <p>max. Ürünlü Marka</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="orders">
+                <div class="icon">
+                    <i class="order"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@buzdolabiSayisi</h3>
+                    <p>Buz Dolabı Sayısı</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="visitors">
+                <div class="icon">
+                    <i class="visit"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@laptopSayisi</h3>
+                    <p>Laptop Sayısı</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="list_of_members">
+            <div class="sales">
+                <div class="icon">
+                    <i class="dollar"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@kasadakiTutar</h3>
+                    <p>Kasadaki Tutar</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="new-users">
+                <div class="icon">
+                    <i class="user1"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@enCokSatilanUrun</h3>
+                    <p>En Çok Satılan Ürün</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="orders">
+                <div class="icon">
+                    <i class="order"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@bugünküSatisSayisi</h3>
+                    <p>Bugünkü Satışlar</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="visitors">
+                <div class="icon">
+                    <i class="visit"></i>
+                </div>
+                <div class="icon-text">
+                    <h3>@bugünküKasa</h3>
+                    <p>Bugünkü Kasa</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
     </div>
 </div>
+
